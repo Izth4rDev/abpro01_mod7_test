@@ -1,20 +1,19 @@
 <template>
-
-		<h1>Cursos</h1>
-    <div class="container">
-			<div class="row g-3">
-        <div v-for="fila in cursos" :key="fila.codigo" class="card col-md-3" style="width: 18rem;">
-          <img class="card-img-top" :src="fila.img" alt="Card image cap">
-          <div class="card-body">
-						<h2 class="card-title">Curso {{ fila.nombre }}</h2>
-						<p class="card-text">Precio: ${{ parseInt(fila.precio).toLocaleString('es') }}</p>
-						<p class="card-text">Duracion:{{ fila.duracion }}</p>
-						<p class="card-text">Cupos:{{ fila.cupos }}</p>
-						<a href="#" class="btn btn-primary">Inscribir Curso</a>
-          </div>
+	<h1>Cursos</h1>
+	<div class="container">
+		<div class="row g-3">
+			<div v-for="fila in cursos" :key="fila.codigo" class="card col-md-3" style="width: 18rem;">
+				<img class="card-img-top" :src="fila.img" alt="Card image cap">
+				<div class="card-body">
+					<h2 class="card-title">Curso {{ fila.nombre }}</h2>
+					<p class="card-text">Precio: ${{ parseInt(fila.precio).toLocaleString('es') }}</p>
+					<p class="card-text">Duracion:{{ fila.duracion }}</p>
+					<p class="card-text">Cupos:{{ fila.cupos }}</p>
+					<a href="#" class="btn btn-primary">Inscribir Curso</a>
 				</div>
 			</div>
-    </div>
+		</div>
+	</div>
 </template>
 
 <script>

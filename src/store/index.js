@@ -5,8 +5,11 @@ import { Courses } from '@/services/cursos'
 export default createStore({
   state: {
     cursos: Courses.getAllCourses(),
+    //desarrollado por Miguel
     usuarioConectado: '',
-    estado: false
+    estado: false,
+    courses: [],
+    loaded: false
   },
   getters: {
   },
@@ -18,6 +21,19 @@ export default createStore({
     limpiarUsuario(state){
       state.usuarioConectado = '';
       //limpia el usuario conectado
+    },
+    addCourse(state, { id, data }) {
+      //insercion de los cursos en el arreglo
+      state.courses.push({
+        id,
+        nombre: data.nombre,
+        precio: data.precio,
+        duracion: data.duracion,
+        cupos: data.cupos,
+        img: data.img
+      });
+
+      console.log(state.courses)
     }
   },
   actions: {
