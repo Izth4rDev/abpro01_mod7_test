@@ -29,6 +29,9 @@ export default createStore({
         nombre: data.nombre,
         precio: data.precio,
         duracion: data.duracion,
+        descripcion: data.descripcion,
+        inscritos: data.inscritos,
+        estado: data.estado,
         cupos: data.cupos,
         img: data.img
       });
