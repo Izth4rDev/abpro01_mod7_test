@@ -105,19 +105,19 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <!-- INICIO FORMULARIO AGREGAR -->
-          <form @submit.prevent="insertar">
+          <!-- INICIO FORMULARIO MODIFICAR -->
+          <form>
             <div class="mb-3">
               <label for="id" class="form-label">Codigo</label>
-              <input type="text" v-model="id" class="form-control" id="id" aria-describedby="idRegistro" disabled>
+              <input type="text" v-model="newCurso.id" class="form-control" id="id" aria-describedby="idRegistro" disabled>
             </div>
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre</label>
-              <input type="text" v-model="nombre" class="form-control" id="nombre" aria-describedby="idRegistro">
+              <input type="text" v-model="newCurso.nombre" class="form-control" id="nombre" aria-describedby="idRegistro">
             </div>
             <div class="mb-3">
               <label for="estado" class="form-label">Estado</label>
-              <select class="form-select" aria-label="Default select example" v-model="estado" id="estado">
+              <select class="form-select" v-model="newCurso.estado" aria-label="Default select example" id="estado">
                 <option selected>selecciona una opción</option>
                 <option value="1">True</option>
                 <option value="2">False</option>
@@ -125,33 +125,33 @@
             </div>
             <div class="mb-3">
               <label for="precio" class="form-label">Precio</label>
-              <input type="text" v-model="precio" class="form-control" id="precio" aria-describedby="precio">
+              <input type="text" v-model="newCurso.precio" class="form-control" id="precio" aria-describedby="precio">
             </div>
             <div class="mb-3">
               <label for="duracion" class="form-label">Duración</label>
-              <input type="text" v-model="duracion" class="form-control" id="duracion" aria-describedby="duracion">
+              <input type="text" v-model="newCurso.duracion" class="form-control" id="duracion" aria-describedby="duracion">
             </div>
             <div class="mb-3">
               <label for="descripcion" class="form-label">descripcion</label>
-              <input type="text" v-model="descripcion" class="form-control" id="descripcion" aria-describedby="descripcion">
+              <input type="text" v-model="newCurso.descripcion" class="form-control" id="descripcion" aria-describedby="descripcion">
             </div>
             <div class="mb-3">
               <label for="descripcion" class="form-label">cupos</label>
-              <input type="number" v-model="cupos" class="form-control" id="cupos" aria-describedby="cupos">
+              <input type="number" v-model="newCurso.cupos" class="form-control" id="cupos" aria-describedby="cupos">
             </div>
             <div class="mb-3">
               <label for="inscritos" class="form-label">inscritos</label>
-              <input type="number" v-model="inscritos" class="form-control" id="inscritos" aria-describedby="inscritos">
+              <input type="number" v-model="newCurso.inscritos" class="form-control" id="inscritos" aria-describedby="inscritos">
             </div>
             <div class="mb-3">
               <label for="imagen" class="form-label">imagen</label>
-              <input type="text" v-model="imagen" class="form-control" id="imagen" aria-describedby="imagen">
+              <input type="text" v-model="newCurso.img" class="form-control" id="imagen" aria-describedby="imagen">
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Agregar</button>
+          <button type="submit" class="btn btn-primary" @click="modificar">Modificar</button>
         </div>
       </div>
     </div>
@@ -177,7 +177,8 @@ export default {
           cupos: 0,
           inscritos: 0,
           imagen:'',
-          editdata: []
+          editdata: [],
+          newCurso: []
       }
   },
   computed: {
@@ -204,9 +205,7 @@ export default {
 
     },
     setEdit(data){
-     
-        console.log(data.nombre + data.descripcion);
-      
+        this.newCurso = data;   
     },
     async insertar(){
       //metodo de insersion 
@@ -243,6 +242,44 @@ export default {
       .catch((error) => {
       // Ha ocurrido un error al insertar el documento
       console.error("Error al insertar el documento:", error);
+      });
+    },
+    async modificar(){
+      //metodo de insersion para modificar
+      console.log(this.newCurso.id);
+      await setDoc(doc(db, "cursos", this.newCurso.id), {
+        nombre: this.newCurso.nombre,
+        precio: this.newCurso.precio,
+        duracion: this.newCurso.duracion,
+        estado:this.newCurso.estado,
+        inscritos:this.newCurso.inscritos,
+        img:this.newCurso.img,
+        cupos:this.newCurso.cupos,
+        descripcion:this.newCurso.descripcion
+      })
+      .then(() => {
+      //promesa ejecutada correctamente
+      //mensaje de exito del registro
+        Swal.fire({
+        title: 'Curso modificado',
+        text: 'exitoso!',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        showCancelButton: false
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+          //volvemos a cargar los cursos de la bd
+          this.extraer();
+        }
+      });
+      })
+      .catch((error) => {
+      // Ha ocurrido un error al insertar el documento
+      console.error("Error al modificar el documento:", error);
       });
     }
   },
